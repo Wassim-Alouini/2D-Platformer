@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
         grounded = groundCheck.IsTouchingLayers(groundLayer);
-        Debug.Log(grounded);
+
         if(Input.GetKeyDown(KeyCode.Space) && grounded)
         {
             rb.AddForce(new Vector2(0f, jumpForce));
@@ -45,6 +46,10 @@ public class PlayerBehaviour : MonoBehaviour
             Flip();
         }
         animator.SetBool("Running", xInput != 0);
+        if(transform.position.y <= -11)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
     void Flip()
     {

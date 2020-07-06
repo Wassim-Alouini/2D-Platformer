@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    const float MAXHEALTH = 100f;
-    float health;
+    public Slider healthSlider;
+    public float MAXHEALTH = 100f;
+    public float health;
     void Start()
     {
         health = MAXHEALTH;
@@ -17,7 +19,8 @@ public class HealthManager : MonoBehaviour
     }
     void Die()
     {
-        GetComponent<CharacterController>().enabled = false;
+        GetComponent<PlayerBehaviour>().enabled = false;
+        GetComponent<Animator>().SetBool("Dead", true);
     }
     public void TakeDamage(float amount)
     {
@@ -28,5 +31,19 @@ public class HealthManager : MonoBehaviour
             health = 0;
             Die();
         }
+
+        healthSlider.value = health / MAXHEALTH;
+    }
+    public void Heal(float amount)
+    {
+        if (health != MAXHEALTH)
+        {
+            health += amount;
+            Debug.Log("Healed");
+
+            healthSlider.value = health / MAXHEALTH;
+
+        }
+        
     }
 }
