@@ -12,7 +12,7 @@ public class LethalScript : MonoBehaviour
     {
         push = true;
         Debug.Log("Hit");
-        if(collision.gameObject.name == "Player")
+        if(collision.gameObject.tag == "Player")
         {
             collision.gameObject.GetComponent<HealthManager>().TakeDamage(damage);
             Debug.Log("Damaged");

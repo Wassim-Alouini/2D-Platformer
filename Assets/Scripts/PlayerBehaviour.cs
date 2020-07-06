@@ -35,7 +35,17 @@ public class PlayerBehaviour : MonoBehaviour
     {
         animator.SetBool("Jumping", !grounded);
         float xInput = Input.GetAxisRaw("Horizontal");
-        Vector2 targetVelocity = new Vector2(xInput * speed, rb.velocity.y);
+        Vector2 targetVelocity;
+        if (Input.GetButton("Fire1"))
+        {
+            targetVelocity = new Vector2(xInput * speed * 2, rb.velocity.y);
+        }
+        else
+        {
+            targetVelocity = new Vector2(xInput * speed, rb.velocity.y);
+        }
+
+
         rb.velocity = Vector2.SmoothDamp(rb.velocity, targetVelocity, ref targetVelocity, Time.deltaTime * smooth);
         if (xInput > 0 && !facingRight)
         {
@@ -57,5 +67,25 @@ public class PlayerBehaviour : MonoBehaviour
         Vector2 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "star")
+        {
+            Destroy(collision.gameObject);
+            gameObject.tag = "PowerUp";
+            gameObject.GetComponent<Renderer>().material.color = Color.green;
+            StartCoroutine("Reset");
+        }
+        if(collision.gameObject.name == "WinFlag")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+    IEnumerator Reset()
+    {
+        yield return new WaitForSeconds(5f);
+        gameObject.tag = "Player";
+        gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 }

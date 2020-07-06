@@ -25,8 +25,9 @@ public class HealthManager : MonoBehaviour
     public void TakeDamage(float amount)
     {
         health -= amount;
+        GetComponent<AudioSource>().Play();
 
-        if(health <= 0)
+        if (health <= 0)
         {
             health = 0;
             Die();
@@ -42,6 +43,8 @@ public class HealthManager : MonoBehaviour
             Debug.Log("Healed");
 
             healthSlider.value = health / MAXHEALTH;
+
+            
 
         }
         
